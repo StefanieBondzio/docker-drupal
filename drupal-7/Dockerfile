@@ -25,5 +25,5 @@ EXPOSE 80
 VOLUME /var/www/html
 
 CMD chown -R www-data:www-data /var/www && \
-    service apache2 restart && \
+    service apache2 restart  > /dev/null 2>&1 && \
     /bin/bash
