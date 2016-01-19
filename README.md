@@ -1,9 +1,3 @@
-# Tomcat auf dem Apache mit TexGrundlagen
+# Drupal with and without tex
 
-Das Projekt ist die Grundlage für Drupalprojekt.
-
-An die entstprechenden Dockerfiles folgendes anhängen:
-
-EXPOSE 80
-
-CMD ["service apache2 restart && /bin/bash"]
+This is the base for drupal projects.
