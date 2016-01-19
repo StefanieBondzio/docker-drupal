@@ -20,10 +20,9 @@ RUN apt-get update && \
     rm -rf /tmp/* 
 
 COPY 000-default.conf /etc/apache2/sites-available/
+RUN chown -R www-data:www-data /var/www
 
 EXPOSE 80
 VOLUME /var/www/html
 
-CMD chown -R www-data:www-data /var/www && \
-    service apache2 restart  > /dev/null 2>&1 && \
-    /bin/bash
+CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
