@@ -6,7 +6,7 @@ COPY cgi.list /etc/apt/sources.list.d/
 RUN apt-get update && \
     apt-get install -y --force-yes --no-install-recommends \
     apache2-mpm-event libapache2-mod-fastcgi \
-    php5-fpm php5-gd php5-mysql php5-sybase php5-ldap php5-dev php5-curl php5-memcache php5-json php-pear 
+    php5-fpm php5-gd php5-mysql php5-sybase php5-ldap php5-dev php5-curl php5-memcache php5-json php-pear \
     make wget \
     drush supervisor && \
     apt-get install -y --force-yes --no-install-recommends imagemagick texinfo dvi2ps ghostscript texlive-generic-recommended texlive-lang-german texlive-latex-recommended texlive-latex-extra texlive-fonts-extra texlive-fonts-recommended texlive-math-extra gnuhtml2latex && \
