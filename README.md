@@ -1,6 +1,6 @@
 # Drupal Container mit und ohne Tex
 
-Al erstes müssen die Conatiner für solr, memcached ud mariadb gestartet werden.
+Als erstes müssen die Conatiner für solr, memcached ud mariadb gestartet werden.
 
 ```sh
 $ docker run --name memcached --restart=always -d -m 64M memcached
