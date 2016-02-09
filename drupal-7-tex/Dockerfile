@@ -27,10 +27,9 @@ COPY php5-fpm.conf /etc/apache2/conf-available/
 RUN chown -R www-data:www-data /var/www && \
     touch /usr/lib/cgi-bin/php5.fcgi && \
     chown -R www-data:www-data /usr/lib/cgi-bin && \
-    a2enconf php5-fpm && \
-    service php5-fpm restart
+    a2enconf php5-fpm
 
 EXPOSE 80
 VOLUME /var/www/html
 
-CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+CMD /usr/sbin/php5-fpm -F && /usr/sbin/apache2ctl -D FOREGROUND
