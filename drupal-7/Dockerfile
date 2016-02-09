@@ -4,7 +4,10 @@ MAINTAINER LWB <thomas.heyl@lwb.de>
 COPY cgi.list /etc/apt/sources.list.d/
 
 RUN apt-get update && \
-    apt-get install -y --force-yes --no-install-recommends apache2-mpm-event libapache2-mod-fastcgi php5-fpm php5-gd php5-mysql php5-sybase php5-ldap php5-dev php5-curl php5-memcache php5-json php-pear make wget drush && \
+    apt-get install -y --force-yes --no-install-recommends \
+    apache2-mpm-event libapache2-mod-fastcgi php5-fpm php5-gd php5-mysql \
+    php5-sybase php5-ldap php5-dev php5-curl php5-memcache php5-json php-pear make wget \
+    drush supervisor && \
     a2enmod rewrite expires actions fastcgi headers alias && \
     pecl install uploadprogress && \
     echo 'extension=uploadprogress.so' >> /etc/php5/fpm/php.ini && \
@@ -20,6 +23,7 @@ RUN apt-get update && \
     rm -rf /var/tmp/* && \
     rm -rf /tmp/* 
 
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY 000-default.conf /etc/apache2/sites-available/
 COPY php5-fpm.conf /etc/apache2/conf-available/
 RUN chown -R www-data:www-data /var/www && \
@@ -30,4 +34,4 @@ RUN chown -R www-data:www-data /var/www && \
 EXPOSE 80
 VOLUME /var/www/html
 
-CMD /usr/sbin/php5-fpm -F && /usr/sbin/apache2ctl -D FOREGROUND
+CMD ["/usr/bin/supervisord"]

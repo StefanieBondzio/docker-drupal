@@ -22,6 +22,7 @@ RUN apt-get update && \
     rm -rf /var/tmp/* && \
     rm -rf /tmp/* 
 
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY 000-default.conf /etc/apache2/sites-available/
 COPY php5-fpm.conf /etc/apache2/conf-available/
 RUN chown -R www-data:www-data /var/www && \
@@ -32,4 +33,4 @@ RUN chown -R www-data:www-data /var/www && \
 EXPOSE 80
 VOLUME /var/www/html
 
-CMD /usr/sbin/php5-fpm -F && /usr/sbin/apache2ctl -D FOREGROUND
+CMD ["/usr/bin/supervisord"]
