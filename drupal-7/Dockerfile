@@ -16,6 +16,7 @@ RUN apt-get update && \
     echo 'opcache.max_accelerated_files = 4000' >> /etc/php5/fpm/php.ini && \
     echo 'opcache.revalidate_freq = 240' >> /etc/php5/fpm/php.ini && \
     echo '[topdesk1]\n\thost = topdesk1.lwb.local\n\tport = 1433\n\ttds version = 8.0\n' >> /etc/freetds/freetds.conf && \
+    echo 'check_certificate = off' >> /etc/wgetrc && \
     rm -f /var/www/html/index.html && \
     apt-get -y --purge remove php5-dev make && \ 
     apt-get -y --purge autoremove && \
