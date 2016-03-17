@@ -14,8 +14,9 @@ RUN apt-get update && \
     make wget \
     drush supervisor \
     postfix \
-    imagemagick texinfo dvi2ps ghostscript texlive-generic-recommended texlive-lang-german texlive-latex-recommended texlive-latex-extra texlive-fonts-extra texlive-fonts-recommended texlive-math-extra gnuhtml2latex && \
-    a2enmod rewrite expires actions fastcgi headers alias && \
+    imagemagick texinfo dvi2ps ghostscript texlive-generic-recommended texlive-lang-german texlive-latex-recommended texlive-latex-extra texlive-fonts-extra texlive-fonts-recommended texlive-math-extra gnuhtml2latex
+
+RUN a2enmod rewrite expires actions fastcgi headers alias && \
     pecl install uploadprogress && \
     echo 'extension=uploadprogress.so' >> /etc/php5/fpm/php.ini && \
     echo 'opcache.memory_consumption = 128' >> /etc/php5/fpm/php.ini && \
@@ -25,8 +26,9 @@ RUN apt-get update && \
     echo 'check_certificate = off' >> /etc/wgetrc && \
     sed -i "s/myhostname =.*/myhostname = ${HOST}\.${DOMAIN}/g" /etc/postfix/main.cf && \
     sed -i "s/mydestination =.*/mydestination = root@${HOST}\.${DOMAIN}, {HOST}\.${DOMAIN}, localhost\.${DOMAIN}, localhost/g" /etc/postfix/main.cf && \
-    sed -i "s/relayhost =.*/relayhost = ${RELAY}\.${DOMAIN}/g" /etc/postfix/main.cf && \
-    rm -f /var/www/html/index.html && \
+    sed -i "s/relayhost =.*/relayhost = ${RELAY}\.${DOMAIN}/g" /etc/postfix/main.cf
+
+RUN rm -f /var/www/html/index.html && \
     apt-get -y --purge remove php5-dev make && \ 
     apt-get -y --purge autoremove && \
     apt-get autoclean && \
@@ -37,12 +39,14 @@ RUN apt-get update && \
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY 000-default.conf /etc/apache2/sites-available/
 COPY php5-fpm.conf /etc/apache2/conf-available/
+
 RUN chown -R www-data:www-data /var/www && \
     touch /usr/lib/cgi-bin/php5.fcgi && \
     chown -R www-data:www-data /usr/lib/cgi-bin && \
     a2enconf php5-fpm
 
 EXPOSE 80
+
 VOLUME /var/www/html
 
 CMD ["/usr/bin/supervisord"]
