@@ -3,8 +3,8 @@ MAINTAINER LWB
 
 COPY cgi.list /etc/apt/sources.list.d/
 
-ENV HOST=HOST
-    RELAY=RELAY
+ENV HOST=HOST \
+    RELAY=RELAY \
     DOMAIN=DOMAIN
 
 RUN apt-get update && \
