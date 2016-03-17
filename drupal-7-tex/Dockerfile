@@ -1,4 +1,4 @@
-FROM elcom:drupal:drupal-7
+FROM elcom/drupal:drupal-7
 MAINTAINER LWB
 
 RUN apt-get update && \
