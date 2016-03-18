@@ -23,10 +23,7 @@ RUN a2enmod rewrite expires actions fastcgi headers alias && \
     echo 'opcache.max_accelerated_files = 4000' >> /etc/php5/fpm/php.ini && \
     echo 'opcache.revalidate_freq = 240' >> /etc/php5/fpm/php.ini && \
     echo '[topdesk1]\n\thost = topdesk1.lwb.local\n\tport = 1433\n\ttds version = 8.0\n' >> /etc/freetds/freetds.conf && \
-    echo 'check_certificate = off' >> /etc/wgetrc && \
-    sed -i "s/myhostname =.*/myhostname = ${HOST}\.${DOMAIN}/g" /etc/postfix/main.cf && \
-    sed -i "s/mydestination =.*/mydestination = root@${HOST}\.${DOMAIN}, {HOST}\.${DOMAIN}, localhost\.${DOMAIN}, localhost/g" /etc/postfix/main.cf && \
-    sed -i "s/relayhost =.*/relayhost = ${RELAY}\.${DOMAIN}/g" /etc/postfix/main.cf
+    echo 'check_certificate = off' >> /etc/wgetrc
 
 RUN rm -f /var/www/html/index.html && \
     apt-get -y --purge remove php5-dev make && \ 
