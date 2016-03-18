@@ -41,8 +41,12 @@ RUN chown -R www-data:www-data /var/www && \
     chown -R www-data:www-data /usr/lib/cgi-bin && \
     a2enconf php5-fpm
 
-EXPOSE 80
-
 VOLUME /var/www/html
+
+COPY docker-entrypoint.sh /
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
+EXPOSE 80
 
 CMD ["/usr/bin/supervisord"]
