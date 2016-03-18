@@ -44,6 +44,7 @@ RUN chown -R www-data:www-data /var/www && \
 VOLUME /var/www/html
 
 COPY docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
