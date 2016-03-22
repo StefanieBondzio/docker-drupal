@@ -49,4 +49,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 80
 
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/bin/supervisord","service postfix start"]
