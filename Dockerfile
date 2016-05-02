@@ -10,7 +10,7 @@ ENV HOST=HOST \
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
     apache2-mpm-event libapache2-mod-fastcgi \
-    php5-fpm php5-gd php5-mysql php5-sybase php5-ldap php5-dev php5-curl php5-memcache php5-json php-pear \
+    php5-fpm php5-gd php5-mysql php5-sybase php5-dev php5-curl php5-memcache php5-json php-pear \
     make wget bsd-mailx \
     drush git supervisor \
     postfix
