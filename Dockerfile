@@ -23,7 +23,7 @@ RUN a2enmod rewrite expires actions fastcgi headers alias && \
     echo 'opcache.revalidate_freq = 240' >> /etc/php5/fpm/php.ini && \
     sed -i 's!upload_max_filesize = 2M!upload_max_filesize = 20M!g' /etc/php5/fpm/php.ini && \
     sed -i 's!post_max_size = 8M!post_max_size = 20M!g' /etc/php5/fpm/php.ini && \
-    sed -i 's!memory_limit = 128M!memory_limit = 256M!g' /etc/php5/fpm/php.ini && \
+    sed -i 's!memory_limit = 128M!memory_limit = 512M!g' /etc/php5/fpm/php.ini && \
     echo '[topdesk1]\n\thost = topdesk1.lwb.local\n\tport = 1433\n\ttds version = 8.0\n' >> /etc/freetds/freetds.conf && \
     echo 'check_certificate = off' >> /etc/wgetrc
 
