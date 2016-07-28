@@ -7,4 +7,6 @@ postconf -e relayhost=${RELAY}\.${DOMAIN}
 
 service postfix restart
 
+chown -R www-data:www-data /var/www
+
 exec "$@"

@@ -42,8 +42,7 @@ COPY php5-fpm.conf /etc/apache2/conf-available/
 
 VOLUME /var/www/html
 
-RUN chown -R www-data:www-data /var/www && \
-    touch /usr/lib/cgi-bin/php5.fcgi && \
+RUN touch /usr/lib/cgi-bin/php5.fcgi && \
     chown -R www-data:www-data /usr/lib/cgi-bin && \
     a2enconf php5-fpm
 
