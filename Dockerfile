@@ -40,12 +40,12 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY 000-default.conf /etc/apache2/sites-available/
 COPY php5-fpm.conf /etc/apache2/conf-available/
 
+VOLUME /var/www/html
+
 RUN chown -R www-data:www-data /var/www && \
     touch /usr/lib/cgi-bin/php5.fcgi && \
     chown -R www-data:www-data /usr/lib/cgi-bin && \
     a2enconf php5-fpm
-
-VOLUME /var/www/html
 
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
