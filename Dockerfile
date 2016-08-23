@@ -11,7 +11,7 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
     apache2-mpm-event libapache2-mod-fastcgi \
     php5-fpm php5-gd php5-mysql php5-sybase php5-dev php5-curl php5-memcache php5-json php-pear \
-    make wget bsd-mailx \
+    make wget bsd-mailx curl \
     drush git supervisor \
     postfix
 
@@ -27,9 +27,11 @@ RUN a2enmod rewrite expires actions fastcgi headers alias && \
     sed -i 's!; max_input_vars = 1000!max_input_vars = 5000!g' /etc/php5/fpm/php.ini && \
     echo '[topdesk1]\n\thost = topdesk1.lwb.local\n\tport = 1433\n\ttds version = 8.0\n' >> /etc/freetds/freetds.conf && \
     echo 'check_certificate = off' >> /etc/wgetrc
+    
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
 
 RUN rm -f /var/www/html/index.html && \
-    apt-get -y --purge remove php5-dev make && \ 
+    apt-get -y --purge remove php5-dev make curl && \ 
     apt-get -y --purge autoremove && \
     apt-get autoclean && \
     rm -rf /var/lib/apt/lists && \
