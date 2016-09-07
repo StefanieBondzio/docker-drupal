@@ -7,6 +7,10 @@ postconf -e relayhost=${RELAY}\.${DOMAIN}
 
 service postfix restart
 
-chown -fR www-data:www-data /var/www
+{
+  chown -fR www-data:www-data /var/www
+} || {
+  echo "could not change owner"
+}
 
 exec "$@"
