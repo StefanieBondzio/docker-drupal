@@ -18,7 +18,7 @@ RUN apt-get update && \
 RUN a2enmod rewrite expires actions fastcgi headers alias && \
     pecl install uploadprogress && \
     echo 'extension=uploadprogress.so' >> /etc/php5/fpm/php.ini && \
-    echo 'opcache.memory_consumption = 128' >> /etc/php5/fpm/php.ini && \
+    echo 'opcache.memory_consumption = 256' >> /etc/php5/fpm/php.ini && \
     echo 'opcache.max_accelerated_files = 4000' >> /etc/php5/fpm/php.ini && \
     echo 'opcache.revalidate_freq = 240' >> /etc/php5/fpm/php.ini && \
     sed -i 's!upload_max_filesize = 2M!upload_max_filesize = 20M!g' /etc/php5/fpm/php.ini && \
