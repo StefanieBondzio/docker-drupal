@@ -44,6 +44,7 @@ COPY 000-default.conf /etc/apache2/sites-available/
 COPY php5-fpm.conf /etc/apache2/conf-available/
 
 VOLUME /var/www/html
+WORKDIR /var/www/html
 
 RUN touch /usr/lib/cgi-bin/php5.fcgi && \
     chown -R www-data:www-data /usr/lib/cgi-bin && \
