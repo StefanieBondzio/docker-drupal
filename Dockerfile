@@ -12,7 +12,8 @@ RUN apt-get update && \
     apache2-mpm-event libapache2-mod-fastcgi \
     php5-fpm php5-gd php5-mysql php5-sybase php5-dev php5-curl php5-memcache php5-json php-pear \
     make wget bsd-mailx curl ca-certificates \
-    drush git supervisor \
+    drush git zip unzip \
+    supervisor \
     postfix
 
 RUN a2enmod rewrite expires actions fastcgi headers alias && \
