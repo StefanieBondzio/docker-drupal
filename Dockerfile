@@ -12,7 +12,7 @@ RUN apt-get update && \
     apache2-mpm-event libapache2-mod-fastcgi \
     php5-fpm php5-gd php5-mysql php5-sybase php5-dev php5-curl php5-memcache php5-json php-pear \
     make wget bsd-mailx curl ca-certificates \
-    drush git zip unzip \
+    git zip unzip \
     supervisor \
     postfix
 
@@ -28,7 +28,12 @@ RUN a2enmod rewrite expires actions fastcgi headers alias && \
     sed -i 's!; max_input_vars = 1000!max_input_vars = 5000!g' /etc/php5/fpm/php.ini && \
     echo '[topdesk1]\n\thost = topdesk1.lwb.local\n\tport = 1433\n\ttds version = 8.0\n' >> /etc/freetds/freetds.conf
     
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
+    mkdir /opt/drush-6 && \ 
+    cd /opt/drush-6 && \ 
+    composer init --require=drush/drush:6.* -n && \ 
+    composer config bin-dir /usr/local/bin && \
+    composer install
 
 RUN rm -f /var/www/html/index.html && \
     apt-get -y --purge remove php5-dev make curl && \ 
