@@ -10,7 +10,7 @@ ENV HOST=HOST \
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
     apache2-mpm-event libapache2-mod-fastcgi \
-    php5-fpm php5-gd php5-mysql php5-dev php5-curl php5-memcache php5-json php-pear \
+    php5-fpm php5-gd php5-mysql php5-sybase php5-dev php5-curl php5-memcache php5-json php-pear \
     make wget bsd-mailx curl ca-certificates \
     git zip unzip \
     supervisor \
@@ -25,7 +25,8 @@ RUN a2enmod rewrite expires actions fastcgi headers alias && \
     sed -i 's!upload_max_filesize = 2M!upload_max_filesize = 20M!g' /etc/php5/fpm/php.ini && \
     sed -i 's!post_max_size = 8M!post_max_size = 20M!g' /etc/php5/fpm/php.ini && \
     sed -i 's!memory_limit = 128M!memory_limit = 256M!g' /etc/php5/fpm/php.ini && \
-    sed -i 's!; max_input_vars = 1000!max_input_vars = 5000!g' /etc/php5/fpm/php.ini
+    sed -i 's!; max_input_vars = 1000!max_input_vars = 5000!g' /etc/php5/fpm/php.ini && \
+    echo '[topdesk1]\n\thost = topdesk1.lwb.local\n\tport = 1433\n\ttds version = 8.0\n' >> /etc/freetds/freetds.conf
     
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
     mkdir /opt/drush-6 && \ 
