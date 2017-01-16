@@ -22,7 +22,7 @@ RUN curl http://www.dotdeb.org/dotdeb.gpg | apt-key add -
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
-    php7.0-fpm php7.0-gd php7.0-mysql php7.0-sybase php7.0-curl php7.0-memcache php7.0-json php7.0-apc
+    php7.0-fpm php7.0-gd php7.0-mysql php7.0-sybase php7.0-mbstring php7.0-xml php7.0-curl php7.0-memcache php7.0-json php7.0-apc
 
 RUN a2enmod rewrite expires actions fastcgi headers alias && \
     echo 'extension=uploadprogress.so' >> /etc/php/7.0/fpm/php.ini && \
@@ -50,14 +50,15 @@ RUN rm -f /var/www/html/index.html && \
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY 000-default.conf /etc/apache2/sites-available/
-COPY php7-fpm.conf /etc/apache2/conf-available/
+COPY php7.0-fpm.conf /etc/apache2/conf-available/
 
 VOLUME /var/www/html
 WORKDIR /var/www/html
 
 RUN touch /usr/lib/cgi-bin/php7.fcgi && \
     chown -R www-data:www-data /usr/lib/cgi-bin && \
-    a2enconf php7-fpm
+    a2enconf php7.0-fpm setenvif && \
+    a2enmod proxy_fcgi setenvif
 
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
