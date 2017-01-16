@@ -30,6 +30,7 @@ RUN a2enmod rewrite expires actions fastcgi headers alias && \
     echo 'opcache.max_accelerated_files = 4000' >> /etc/php/7.0/fpm/php.ini && \
     echo 'opcache.revalidate_freq = 240' >> /etc/php/7.0/fpm/php.ini && \
     echo 'opcache.fast_shutdown = 1' >> /etc/php/7.0/fpm/php.ini && \
+    echo 'apc.rfc1867 = 1' >> /etc/php/7.0/fpm/php.ini && \
     sed -i 's!upload_max_filesize = 2M!upload_max_filesize = 20M!g' /etc/php/7.0/fpm/php.ini && \
     sed -i 's!post_max_size = 8M!post_max_size = 20M!g' /etc/php/7.0/fpm/php.ini && \
     sed -i 's!memory_limit = 128M!memory_limit = 256M!g' /etc/php/7.0/fpm/php.ini && \
@@ -55,9 +56,9 @@ COPY php7.0-fpm.conf /etc/apache2/conf-available/
 VOLUME /var/www/html
 WORKDIR /var/www/html
 
-RUN touch /usr/lib/cgi-bin/php7.fcgi && \
+RUN touch /usr/lib/cgi-bin/php7.0.fcgi && \
     chown -R www-data:www-data /usr/lib/cgi-bin && \
-    a2enconf php7.0-fpm setenvif && \
+    a2enconf php7.0-fpm && \
     a2enmod proxy_fcgi setenvif
 
 COPY docker-entrypoint.sh /usr/local/bin/
