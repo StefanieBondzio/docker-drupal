@@ -11,7 +11,6 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
     apache2-mpm-event libapache2-mod-fastcgi \
     apt-transport-https \
-    #make 
     curl wget bsd-mailx ca-certificates \
     git zip unzip \
     supervisor \
@@ -45,23 +44,20 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
     composer install
 
 RUN rm -f /var/www/html/index.html && \
-#    apt-get -y --purge remove php/7.0-dev make curl && \
-    apt-get -y --purge autoremove && \
-    apt-get autoclean && \
     rm -rf /var/lib/apt/lists && \
     rm -rf /var/tmp/* && \
     rm -rf /tmp/* 
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY 000-default.conf /etc/apache2/sites-available/
-COPY php7.0-fpm.conf /etc/apache2/conf-available/
+COPY php7-fpm.conf /etc/apache2/conf-available/
 
 VOLUME /var/www/html
 WORKDIR /var/www/html
 
 RUN touch /usr/lib/cgi-bin/php7.fcgi && \
     chown -R www-data:www-data /usr/lib/cgi-bin && \
-    a2enconf php7.0-fpm
+    a2enconf php7-fpm
 
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
