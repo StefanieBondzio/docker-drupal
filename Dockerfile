@@ -22,7 +22,7 @@ RUN curl http://www.dotdeb.org/dotdeb.gpg | apt-key add -
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
-    php7.0-fpm php7.0-gd php7.0-mysql php7.0-sybase php7.0-mbstring php7.0-xml php7.0-curl php7.0-memcache php7.0-json php7.0-apc
+    php7.0-fpm php7.0-gd php7.0-mysql php7.0-sybase php7.0-mbstring php7.0-xml php7.0-curl php7.0-memcache php7.0-json php7.0-zip php7.0-apc
 
 RUN a2enmod rewrite expires actions fastcgi headers alias && \
     echo 'extension=uploadprogress.so' >> /etc/php/7.0/fpm/php.ini && \
