@@ -3,13 +3,15 @@ MAINTAINER LWB
 
 ENV HOST=HOST \
     RELAY=RELAY \
-    DOMAIN=DOMAIN
+    DOMAIN=DOMAIN \
+    DRUSH_VERSION=8
 
 COPY cgi.list /etc/apt/sources.list.d/
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
     apache2-mpm-event libapache2-mod-fastcgi \
+    mysql-client \
     apt-transport-https \
     curl wget bsd-mailx ca-certificates \
     git zip unzip \
@@ -38,9 +40,9 @@ RUN a2enmod rewrite expires actions fastcgi headers alias && \
     echo '[topdesk1]\n\thost = topdesk1.lwb.local\n\tport = 1433\n\ttds version = 8.0\n' >> /etc/freetds/freetds.conf
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
-    mkdir /opt/drush-7 && \
-    cd /opt/drush-7 && \
-    composer init --require=drush/drush:7.* -n && \
+    mkdir /opt/drush-${DRUSH_VERSION} && \
+    cd /opt/drush-${DRUSH_VERSION} && \
+    composer init --require=drush/drush:${DRUSH_VERSION}.* -n && \
     composer config bin-dir /usr/local/bin && \
     composer install
 
