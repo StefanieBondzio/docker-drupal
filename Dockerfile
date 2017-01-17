@@ -25,7 +25,7 @@ RUN curl http://www.dotdeb.org/dotdeb.gpg | apt-key add -
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
     php7.0-fpm php7.0-gd php7.0-mysql php7.0-sybase php7.0-mbstring php7.0-xml php7.0-curl php7.0-memcache php7.0-json php7.0-zip php7.0-apc \
-    php7.0-dev
+    php7.0-dev make
 
 RUN a2enmod rewrite expires actions fastcgi headers alias && \
     echo 'extension=uploadprogress.so' >> /etc/php/7.0/fpm/php.ini && \
@@ -58,9 +58,9 @@ RUN git clone https://git.php.net/repository/pecl/php/uploadprogress.git && \
     echo '; priority=20' >> /etc/php/7.0/mods-available/uploadprogress.ini && \
     echo 'extension=uploadprogress.so' >> /etc/php/7.0/mods-available/uploadprogress.ini && \
     phpenmod uploadprogress
-    
+
 RUN rm -f /var/www/html/index.html && \
-    apt-get remove --purge -y php7.0-dev && \
+    apt-get remove --purge -y php7.0-dev make && \
     apt-get autoremove --purge -y && \
     rm -rf /var/lib/apt/lists && \
     rm -rf /var/tmp/* && \
