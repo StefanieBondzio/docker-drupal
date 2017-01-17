@@ -38,9 +38,9 @@ RUN a2enmod rewrite expires actions fastcgi headers alias && \
     echo '[topdesk1]\n\thost = topdesk1.lwb.local\n\tport = 1433\n\ttds version = 8.0\n' >> /etc/freetds/freetds.conf
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
-    mkdir /opt/drush-8 && \
-    cd /opt/drush-8 && \
-    composer init --require=drush/drush:8.* -n && \
+    mkdir /opt/drush-7 && \
+    cd /opt/drush-7 && \
+    composer init --require=drush/drush:7.* -n && \
     composer config bin-dir /usr/local/bin && \
     composer install
 
