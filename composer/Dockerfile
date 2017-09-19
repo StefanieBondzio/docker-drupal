@@ -61,7 +61,7 @@ RUN git clone https://git.php.net/repository/pecl/php/uploadprogress.git && \
     phpenmod uploadprogress
 
 RUN rm -f /var/www/html/index.html && \
-    mkdir -r /var/www/html/web && \
+    mkdir -p /var/www/html/web && \
     apt-get remove --purge -y php${PHP_VERSION}-dev make && \
     apt-get autoremove --purge -y && \
     rm -rf /var/lib/apt/lists && \
