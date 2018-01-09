@@ -9,9 +9,8 @@ ENV HOST=HOST \
 
 COPY cgi.list /etc/apt/sources.list.d/
 
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
-    apache2-mpm-event libapache2-mod-fastcgi \
+RUN apt update && \
+    DEBIAN_FRONTEND=noninteractive apt install -y --force-yes --no-install-recommends \
     mysql-client \
     apt-transport-https \
     curl wget bsd-mailx ca-certificates \
@@ -22,16 +21,16 @@ RUN apt-get update && \
     php${PHP_VERSION}-dev make
 
 RUN a2enmod rewrite expires actions fastcgi headers alias && \
-    echo 'extension=uploadprogress.so' >> /etc/php/${PHP_VERSION}/fpm/php.ini && \
-    echo 'opcache.memory_consumption = 256' >> /etc/php/${PHP_VERSION}/fpm/php.ini && \
-    echo 'opcache.max_accelerated_files = 4000' >> /etc/php/${PHP_VERSION}/fpm/php.ini && \
-    echo 'opcache.revalidate_freq = 240' >> /etc/php/${PHP_VERSION}/fpm/php.ini && \
-    echo 'opcache.fast_shutdown = 1' >> /etc/php/${PHP_VERSION}/fpm/php.ini && \
-    echo 'apc.rfc1867 = 1' >> /etc/php/${PHP_VERSION}/fpm/php.ini && \
-    sed -i 's!upload_max_filesize = 2M!upload_max_filesize = 20M!g' /etc/php/${PHP_VERSION}/fpm/php.ini && \
-    sed -i 's!post_max_size = 8M!post_max_size = 20M!g' /etc/php/${PHP_VERSION}/fpm/php.ini && \
-    sed -i 's!memory_limit = 128M!memory_limit = 256M!g' /etc/php/${PHP_VERSION}/fpm/php.ini && \
-    sed -i 's!; max_input_vars = 1000!max_input_vars = 5000!g' /etc/php/${PHP_VERSION}/fpm/php.ini && \
+    echo 'extension=uploadprogress.so' >> /etc/php/${PHP_VERSION}/apache2/php.ini && \
+    echo 'opcache.memory_consumption = 256' >> /etc/php/${PHP_VERSION}/apache2/php.ini && \
+    echo 'opcache.max_accelerated_files = 4000' >> /etc/php/${PHP_VERSION}/apache2/php.ini && \
+    echo 'opcache.revalidate_freq = 240' >> /etc/php/${PHP_VERSION}/apache2/php.ini && \
+    echo 'opcache.fast_shutdown = 1' >> /etc/php/${PHP_VERSION}/apache2/php.ini && \
+    echo 'apc.rfc1867 = 1' >> /etc/php/${PHP_VERSION}/apache2/php.ini && \
+    sed -i 's!upload_max_filesize = 2M!upload_max_filesize = 20M!g' /etc/php/${PHP_VERSION}/apache2/php.ini && \
+    sed -i 's!post_max_size = 8M!post_max_size = 20M!g' /etc/php/${PHP_VERSION}/apache2/php.ini && \
+    sed -i 's!memory_limit = 128M!memory_limit = 256M!g' /etc/php/${PHP_VERSION}/apache2/php.ini && \
+    sed -i 's!; max_input_vars = 1000!max_input_vars = 5000!g' /etc/php/${PHP_VERSION}/apache2/php.ini && \
     echo '[topdesk1]\n\thost = php.lwb.local\n\tport = 1433\n\ttds version = 8.0\n' >> /etc/freetds/freetds.conf
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
@@ -55,22 +54,19 @@ RUN git clone https://git.php.net/repository/pecl/php/uploadprogress.git && \
 
 RUN rm -f /var/www/html/index.html && \
     mkdir -p /var/www/html/web && \
-    apt-get remove --purge -y php${PHP_VERSION}-dev make && \
-    apt-get autoremove --purge -y && \
+    apt remove --purge -y php${PHP_VERSION}-dev make && \
+    apt autoremove --purge -y && \
     rm -rf /var/lib/apt/lists && \
     rm -rf /var/tmp/* && \
     rm -rf /tmp/* 
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY 000-default.conf /etc/apache2/sites-available/
-COPY php${PHP_VERSION}-fpm.conf /etc/apache2/conf-available/
 
 VOLUME /var/www/html
 WORKDIR /var/www/html
 
-RUN touch /usr/lib/cgi-bin/php${PHP_VERSION}.fcgi && \
-    chown -R www-data:www-data /usr/lib/cgi-bin && \
-    a2enconf php${PHP_VERSION}-fpm && \
+RUN a2enconf php${PHP_VERSION}-fpm && \
     a2enmod proxy_fcgi setenvif
 
 COPY docker-entrypoint.sh /usr/local/bin/
