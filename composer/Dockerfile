@@ -7,8 +7,6 @@ ENV HOST=HOST \
     DRUSH_VERSION=8 \
     PHP_VERSION=7.0
 
-COPY cgi.list /etc/apt/sources.list.d/
-
 RUN apt update && \
     DEBIAN_FRONTEND=noninteractive apt install -y --force-yes --no-install-recommends \
     mysql-client \
