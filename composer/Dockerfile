@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:stretch
 MAINTAINER LWB
 
 ENV HOST=HOST \
@@ -17,14 +17,7 @@ RUN apt-get update && \
     curl wget bsd-mailx ca-certificates \
     git zip unzip \
     supervisor \
-    postfix
-
-COPY dotdeb.list /etc/apt/sources.list.d/
-
-RUN curl http://www.dotdeb.org/dotdeb.gpg | apt-key add -
-
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
+    postfix \
     php${PHP_VERSION}-fpm php${PHP_VERSION}-gd php${PHP_VERSION}-mysql php${PHP_VERSION}-sybase php${PHP_VERSION}-mbstring php${PHP_VERSION}-xml php${PHP_VERSION}-curl php${PHP_VERSION}-memcache php${PHP_VERSION}-json php${PHP_VERSION}-zip php${PHP_VERSION}-apc php${PHP_VERSION}-soap php${PHP_VERSION}-ldap \
     php${PHP_VERSION}-dev make
 
@@ -39,7 +32,7 @@ RUN a2enmod rewrite expires actions fastcgi headers alias && \
     sed -i 's!post_max_size = 8M!post_max_size = 20M!g' /etc/php/${PHP_VERSION}/fpm/php.ini && \
     sed -i 's!memory_limit = 128M!memory_limit = 256M!g' /etc/php/${PHP_VERSION}/fpm/php.ini && \
     sed -i 's!; max_input_vars = 1000!max_input_vars = 5000!g' /etc/php/${PHP_VERSION}/fpm/php.ini && \
-    echo '[topdesk1]\n\thost = topdesk1.lwb.local\n\tport = 1433\n\ttds version = 8.0\n' >> /etc/freetds/freetds.conf
+    echo '[topdesk1]\n\thost = php.lwb.local\n\tport = 1433\n\ttds version = 8.0\n' >> /etc/freetds/freetds.conf
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
     mkdir /opt/drush-${DRUSH_VERSION} && \
