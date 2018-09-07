@@ -16,8 +16,8 @@ RUN apt-get update && \
     git zip unzip \
     supervisor \
     postfix \
-    openjdk-8-jre-headless && \
-    libreoffice-writer && \
+    openjdk-8-jre-headless \
+    libreoffice-writer \
     apache2 libapache2-mod-php7.0 \
     php${PHP_VERSION}-gd php${PHP_VERSION}-mysql php${PHP_VERSION}-sybase php${PHP_VERSION}-mbstring php${PHP_VERSION}-xml php${PHP_VERSION}-curl php${PHP_VERSION}-memcache php${PHP_VERSION}-json php${PHP_VERSION}-zip php${PHP_VERSION}-apc php${PHP_VERSION}-soap php${PHP_VERSION}-ldap \
     php${PHP_VERSION}-dev make
