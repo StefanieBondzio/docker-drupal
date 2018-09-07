@@ -5,7 +5,8 @@ ENV HOST=HOST \
     RELAY=RELAY \
     DOMAIN=DOMAIN \
     DRUSH_VERSION=8 \
-    PHP_VERSION=7.0
+    PHP_VERSION=7.0 \
+    TIKA tika-app-1.18.jar
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
@@ -15,6 +16,8 @@ RUN apt-get update && \
     git zip unzip \
     supervisor \
     postfix \
+    openjdk-8-jre-headless && \
+    libreoffice-writer && \
     apache2 libapache2-mod-php7.0 \
     php${PHP_VERSION}-gd php${PHP_VERSION}-mysql php${PHP_VERSION}-sybase php${PHP_VERSION}-mbstring php${PHP_VERSION}-xml php${PHP_VERSION}-curl php${PHP_VERSION}-memcache php${PHP_VERSION}-json php${PHP_VERSION}-zip php${PHP_VERSION}-apc php${PHP_VERSION}-soap php${PHP_VERSION}-ldap \
     php${PHP_VERSION}-dev make
@@ -58,6 +61,14 @@ RUN rm -f /var/www/html/index.html && \
     rm -rf /var/lib/apt/lists && \
     rm -rf /var/tmp/* && \
     rm -rf /tmp/* 
+
+RUN wget http://www.apache.org/dyn/closer.cgi/tika/${TIKA} && \
+    mkdir -p /var/www/vendor && \
+    mv ${TIKA} /var/www/vendor/
+
+RUN mkdir -p /var/www/.config/libreoffice/4/user
+COPY registrymodifications.xcu /var/www/.config/libreoffice/4/user/
+RUN chmod o+r /var/www/.config/libreoffice/4/user/registrymodifications.xcu
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY 000-default.conf /etc/apache2/sites-available/
