@@ -62,7 +62,7 @@ RUN rm -f /var/www/html/index.html && \
     rm -rf /var/tmp/* && \
     rm -rf /tmp/* 
 
-RUN wget http://www.apache.org/dyn/closer.cgi/tika/${TIKA} && \
+RUN wget http://mirror.netcologne.de/apache.org/tika/${TIKA} && \
     mkdir -p /var/www/vendor && \
     mv ${TIKA} /var/www/vendor/
 
