@@ -75,7 +75,7 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY 000-default.conf /etc/apache2/sites-available/
 
 VOLUME /var/www/html
-WORKDIR /var/www/html
+WORKDIR /var/www/html/web
 
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN ln -s usr/local/bin/docker-entrypoint.sh /entrypoint.sh # backwards compat
