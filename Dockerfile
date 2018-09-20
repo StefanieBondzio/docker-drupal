@@ -6,7 +6,7 @@ ENV HOST=HOST \
     DOMAIN=DOMAIN \
     DRUSH_VERSION=8 \
     PHP_VERSION=7.0 \
-    TIKA=tika-app-1.18.jar
+    TIKA=tika-app-1.19.jar
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
