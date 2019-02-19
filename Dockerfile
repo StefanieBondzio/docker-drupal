@@ -6,7 +6,7 @@ ENV HOST=HOST \
     DOMAIN=DOMAIN \
     DRUSH_VERSION=8 \
     PHP_VERSION=7.0 \
-    TIKA=tika-app-1.19.jar
+    TIKA=tika-app-1.20.jar
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
@@ -21,7 +21,7 @@ RUN apt-get update && \
     tesseract-ocr tesseract-ocr-deu \
     apache2 libapache2-mod-php7.0 \
     php${PHP_VERSION}-gd php${PHP_VERSION}-mysql php${PHP_VERSION}-sybase php${PHP_VERSION}-mbstring php${PHP_VERSION}-xml php${PHP_VERSION}-curl php${PHP_VERSION}-memcache php${PHP_VERSION}-json php${PHP_VERSION}-zip php${PHP_VERSION}-apc php${PHP_VERSION}-soap php${PHP_VERSION}-ldap \
-    php${PHP_VERSION}-dev make
+    php-uploadprogress
 
 RUN a2enmod rewrite expires actions headers alias && \
     echo 'extension=uploadprogress.so' >> /etc/php/${PHP_VERSION}/apache2/php.ini && \
@@ -43,22 +43,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
     composer config bin-dir /usr/local/bin && \
     composer install
 
-RUN git clone https://git.php.net/repository/pecl/php/uploadprogress.git && \
-    cd uploadprogress && \
-    phpize${PHP_VERSION} && \
-    ./configure && \
-    make && \
-    make install && \
-    touch /etc/php/${PHP_VERSION}/mods-available/uploadprogress.ini && \
-    echo '; configuration for php uploadprogress module' >> /etc/php/${PHP_VERSION}/mods-available/uploadprogress.ini && \
-    echo '; priority=20' >> /etc/php/${PHP_VERSION}/mods-available/uploadprogress.ini && \
-    echo 'extension=uploadprogress.so' >> /etc/php/${PHP_VERSION}/mods-available/uploadprogress.ini && \
-    phpenmod uploadprogress
-
 RUN rm -f /var/www/html/index.html && \
     mkdir -p /var/www/html/web && \
-    apt-get remove --purge -y php${PHP_VERSION}-dev make && \
-    apt-get autoremove --purge -y && \
     rm -rf /var/lib/apt/lists && \
     rm -rf /var/tmp/* && \
     rm -rf /tmp/* 
