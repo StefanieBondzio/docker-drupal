@@ -31,8 +31,8 @@ RUN a2enmod rewrite expires actions headers alias && \
     echo 'opcache.revalidate_freq = 240' >> /etc/php/${PHP_VERSION}/apache2/php.ini && \
     echo 'opcache.fast_shutdown = 1' >> /etc/php/${PHP_VERSION}/apache2/php.ini && \
     echo 'apc.rfc1867 = 1' >> /etc/php/${PHP_VERSION}/apache2/php.ini && \
-    sed -i 's!upload_max_filesize = 2M!upload_max_filesize = 20M!g' /etc/php/${PHP_VERSION}/apache2/php.ini && \
-    sed -i 's!post_max_size = 8M!post_max_size = 20M!g' /etc/php/${PHP_VERSION}/apache2/php.ini && \
+    sed -i 's!upload_max_filesize = 2M!upload_max_filesize = 512M!g' /etc/php/${PHP_VERSION}/apache2/php.ini && \
+    sed -i 's!post_max_size = 8M!post_max_size = 512M!g' /etc/php/${PHP_VERSION}/apache2/php.ini && \
     sed -i 's!memory_limit = 128M!memory_limit = 512M!g' /etc/php/${PHP_VERSION}/apache2/php.ini && \
     sed -i 's!; max_input_vars = 1000!max_input_vars = 5000!g' /etc/php/${PHP_VERSION}/apache2/php.ini && \
     echo '[php]\n\thost = php.lwb.local\n\tport = 1433\n\ttds version = 8.0\n' >> /etc/freetds/freetds.conf
