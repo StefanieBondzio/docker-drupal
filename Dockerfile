@@ -1,26 +1,25 @@
-FROM debian:stretch
+FROM debian:buster
 MAINTAINER LWB
 
 ENV HOST=HOST \
     RELAY=RELAY \
     DOMAIN=DOMAIN \
     DRUSH_VERSION=8 \
-    PHP_VERSION=7.0 \
+    PHP_VERSION=7.3 \
     TIKA=tika-app-1.21.jar
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
-    mysql-client \
     apt-transport-https \
     curl wget bsd-mailx ca-certificates \
     git zip unzip \
     supervisor \
     postfix \
-    openjdk-8-jre-headless \
+    openjdk-11-jre-headless \
     libreoffice-writer \
     tesseract-ocr tesseract-ocr-deu \
     ffmpeg \
-    apache2 libapache2-mod-php7.0 \
+    apache2 libapache2-mod-php${PHP_VERSION} \
     php${PHP_VERSION}-gd php${PHP_VERSION}-mysql php${PHP_VERSION}-sybase php${PHP_VERSION}-mbstring php${PHP_VERSION}-xml php${PHP_VERSION}-curl php${PHP_VERSION}-memcache php${PHP_VERSION}-json php${PHP_VERSION}-zip php${PHP_VERSION}-apc php${PHP_VERSION}-soap php${PHP_VERSION}-ldap \
     php-uploadprogress
 
@@ -52,7 +51,7 @@ RUN rm -f /var/www/html/index.html && \
 
 RUN wget http://mirror.netcologne.de/apache.org/tika/${TIKA} && \
     mkdir -p /var/www/vendor && \
-    mv ${TIKA} /var/www/vendor/
+    mv ${TIKA} /var/www/vendor/tika-app.jar
 
 RUN mkdir -p /var/www/.config/libreoffice/4/user
 COPY registrymodifications.xcu /var/www/.config/libreoffice/4/user/
