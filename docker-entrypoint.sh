@@ -1,11 +1,8 @@
 #!/bin/bash
 set -e
 
-postconf -e myhostname=${HOST}\.${DOMAIN}
-postconf -e mydestination="root@${HOST}.${DOMAIN}, ${HOST}.${DOMAIN}, localhost.${DOMAIN}"
-postconf -e relayhost=${RELAY}\.${DOMAIN}
-
-service postfix restart
+sed -i "s!mailhub=mail!mailhub=${RELAY}!g" /etc/ssmtp/ssmtp.conf
+sed -i 's!#FromLineOverride=YES!FromLineOverride=YES!g' /etc/ssmtp/ssmtp.conf
 
 {
   chown -fR www-data:www-data /var/www

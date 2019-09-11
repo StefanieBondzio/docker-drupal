@@ -1,9 +1,7 @@
 FROM debian:stretch
 MAINTAINER LWB
 
-ENV HOST=HOST \
-    RELAY=RELAY \
-    DOMAIN=DOMAIN \
+ENV RELAY=RELAY \
     DRUSH_VERSION=8 \
     PHP_VERSION=7.0 \
     TIKA=tika-app-1.22.jar
@@ -14,10 +12,8 @@ RUN apt-get update && \
     apt-transport-https \
     curl wget \
     ca-certificates \
-    mailutils \
+    ssmtp \
     git zip unzip \
-    supervisor \
-    postfix \
     openjdk-8-jre-headless \
     libreoffice-writer \
     tesseract-ocr tesseract-ocr-deu \
@@ -37,6 +33,7 @@ RUN a2enmod rewrite expires actions headers alias && \
     sed -i 's!post_max_size = 8M!post_max_size = 512M!g' /etc/php/${PHP_VERSION}/apache2/php.ini && \
     sed -i 's!memory_limit = 128M!memory_limit = 512M!g' /etc/php/${PHP_VERSION}/apache2/php.ini && \
     sed -i 's!; max_input_vars = 1000!max_input_vars = 5000!g' /etc/php/${PHP_VERSION}/apache2/php.ini && \
+    sed -i 's!;sendmail_path =!sendmail_path = /usr/sbin/ssmtp -t!g' /etc/php/${PHP_VERSION}/apache2/php.ini && \
     echo '[php]\n\thost = php.lwb.local\n\tport = 1433\n\ttds version = 8.0\n' >> /etc/freetds/freetds.conf
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
@@ -60,7 +57,6 @@ RUN mkdir -p /var/www/.config/libreoffice/4/user
 COPY registrymodifications.xcu /var/www/.config/libreoffice/4/user/
 RUN chmod o+r /var/www/.config/libreoffice/4/user/registrymodifications.xcu
 
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY 000-default.conf /etc/apache2/sites-available/
 
 VOLUME /var/www/html
@@ -73,4 +69,4 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 80
 
-CMD ["/usr/bin/supervisord"]
+CMD /usr/sbin/apache2ctl -D FOREGROUND
