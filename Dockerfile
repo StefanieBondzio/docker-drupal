@@ -6,13 +6,15 @@ ENV HOST=HOST \
     DOMAIN=DOMAIN \
     DRUSH_VERSION=8 \
     PHP_VERSION=7.0 \
-    TIKA=tika-app-1.21.jar
+    TIKA=tika-app-1.22.jar
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
     mysql-client \
     apt-transport-https \
-    curl wget bsd-mailx ca-certificates \
+    curl wget \
+    ca-certificates \
+    mailutils \
     git zip unzip \
     supervisor \
     postfix \
