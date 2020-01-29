@@ -4,7 +4,7 @@ MAINTAINER LWB
 ENV RELAY=RELAY \
     DRUSH_VERSION=8 \
     PHP_VERSION=7.0 \
-    TIKA=tika-app-1.22.jar
+    TIKA=tika-app-1.23.jar
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes --no-install-recommends \
